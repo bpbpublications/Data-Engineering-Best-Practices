@@ -1,0 +1,29 @@
+{
+    "service": "hadoop-hive",
+    "hive_policies": [
+        {
+            "name": "DA_Hive_Finance",
+            "resources": {"database": ["analytics_db"], "table": ["finance_*"]},
+            "groups": ["DataAnalysts"],
+            "permissions": [{"accesses": [{"type": "select", "isAllowed": true}]}],
+            "conditions": [{"type": "tag", "values": ["Team=Finance", "Sensitivity=Low"]}],
+            "description": "Finance DAs query finance tables"
+        },
+        {
+            "name": "DS_Hive_Stock",
+            "resources": {"database": ["research_db"], "table": ["predict_*"]},
+            "groups": ["DataScientists"],
+            "permissions": [{"accesses": [{"type": "select", "isAllowed": true}, {"type": "update", "isAllowed": true}]}],
+            "conditions": [{"type": "tag", "values": ["Project=StockPredictor"]}],
+            "description": "DSs manage stock prediction outputs"
+        },
+        {
+            "name": "DE_Core_Processing",
+            "resources": {"database": ["core_processing_db"], "table": ["*"]},
+            "groups": ["DataEngineers"],
+            "permissions": [{"accesses": [{"type": "select", "isAllowed": true}, {"type": "update", "isAllowed": true}, {"type": "create", "isAllowed": true}]}],
+            "conditions": [{"type": "tag", "values": ["Environment=Dev"]}],
+            "description": "DEs manage core processing database"
+        }
+    ]
+}

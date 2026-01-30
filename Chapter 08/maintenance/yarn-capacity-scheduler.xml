@@ -1,0 +1,46 @@
+<!-- YARN Capacity Scheduler QoS Configuration -->
+<configuration>
+    <!-- Enable QoS monitoring and preemption -->
+    <property>
+        <name>yarn.resourcemanager.scheduler.monitor.enable</name>
+        <value>true</value>
+    </property>
+    
+    <!-- Critical/Production Queue - Highest Priority -->
+    <property>
+        <name>yarn.scheduler.capacity.root.critical.capacity</name>
+        <value>40</value> <!-- 40% guaranteed minimum capacity -->
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.critical.user-limit-factor</name>
+        <value>1</value> <!-- Strict resource limits per user -->
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.critical.minimum-user-limit-percent</name>
+        <value>100</value> <!-- No sharing with other users -->
+    </property>
+    
+    <!-- Ad-hoc/Development Queue - Best Effort -->
+    <property>
+        <name>yarn.scheduler.capacity.root.adhoc.capacity</name>
+        <value>25</value> <!-- 25% minimum guaranteed -->
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.adhoc.maximum-capacity</name>
+        <value>100</value> <!-- Can use entire cluster if idle -->
+    </property>
+    <property>
+        <name>yarn.scheduler.capacity.root.adhoc.user-limit-factor</name>
+        <value>10</value> <!-- High sharing allowed -->
+    </property>
+    
+    <!-- Preemption Configuration for SLA Enforcement -->
+    <property>
+        <name>yarn.resourcemanager.monitor.capacity.preemption.max-wait-before-kill</name>
+        <value>15000</value> <!-- 15 seconds before preempting tasks -->
+    </property>
+    <property>
+        <name>yarn.resourcemanager.monitor.capacity.preemption.total-preemption-per-round</name>
+        <value>0.1</value> <!-- Maximum 10% of resources preempted per cycle -->
+    </property>
+</configuration>

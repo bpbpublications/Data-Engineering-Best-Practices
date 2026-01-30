@@ -1,0 +1,47 @@
+{
+    "service": "hadoop-hdfs",
+    "policies": [
+        {
+            "name": "User_Public_Access",
+            "resources": {"path": ["/public/reports"]},
+            "groups": ["Users"],
+            "permissions": [{
+                "accesses": [{"type": "read", "isAllowed": true}]
+            }],
+            "conditions": [{
+                "type": "tag",
+                "values": ["Department=Marketing", "Data_Classification=Low"]
+            }],
+            "description": "Read-only access for general Users in Marketing to public reports"
+        },
+        {
+            "name": "Analyst_Analytics_Access",
+            "resources": {"path": ["/data/analytics"]},
+            "groups": ["Analysts"],
+            "permissions": [{
+                "accesses": [{"type": "read", "isAllowed": true}]
+            }],
+            "conditions": [{
+                "type": "tag",
+                "values": ["Team=Sales", "Data_Classification=Low"]
+            }],
+            "description": "Read-only access for Analysts in Sales to low-sensitivity analytics data"
+        }
+    ],
+    "hive_policies": [{
+        "name": "Analyst_Hive_Access",
+        "resources": {
+            "database": ["analytics_db"],
+            "table": ["sales_*"]
+        },
+        "groups": ["Analysts"],
+        "permissions": [{
+            "accesses": [{"type": "select", "isAllowed": true}]
+        }],
+        "conditions": [{
+            "type": "tag",
+            "values": ["Team=Sales", "Sensitivity=Low"]
+        }],
+        "description": "Select access for Sales Analysts on low-sensitivity tables"
+    }]
+}
